@@ -1,0 +1,14 @@
+{% extends 'skycast_app/base.html' %}
+{% block content %}
+    <h3> Enter your Credentials Below</h3><br>
+    Username and Password are both case sensitive
+    <form method="POST" class="post-forms">{% csrf_token %}
+        {{ form.as_p }}
+        {% if error_message %}
+            {{ error_message }}<br><p>&nbsp;</p>
+        {% endif %}
+            <button style="width:100px" type="submit" class="save btn btn-default">Login</button><br>
+    </form>
+    <p>&nbsp;</p>
+    <a href="/create_account"><button style="width:100px" type="submit" class="save btn btn-default" id="create_user_button">Create User</button></a>
+{% endblock %}

@@ -1,0 +1,80 @@
+.page-header {
+    height: 130px;
+    width: 100%;
+    background-image: url('/static/images/header_background.jpg');
+    background-repeat: repeat;
+    background-attachment: scroll;
+    background-position: 0% 0%;
+    position: fixed;
+    margin-top: 0px;
+    left: 0px;
+}
+
+.header_contents {
+    height: 130px;
+    width: 100%;
+    margin: auto;
+}
+
+.page-footer {
+    height: 41px;
+    width: 100%;
+    background-image: url('/static/images/footer_background.jpg');
+    background-attachment: scroll;
+    background-position: 0% 0%;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+}
+
+.footer_contents {
+    height: 41px;
+    width: 100%;
+    margin: auto;
+}
+
+.header_contents h1, .header_contents h1 a, .header_contents h1 a:visited, .header_contents h1 a:active {
+    color: #f4b342;
+    font-size: 46pt;
+    text-decoration: none;
+}
+
+.footer_contents a, .footer_contents a:visited, .footer_contents a:active {
+    color: #0035bc;
+    font-size: 18pt;
+    text-decoration: none;
+}
+
+.content_container {
+    padding: 132px;
+    padding-bottom: 42px;
+    width: 100% ;
+    margin-left: auto ;
+    margin-right: auto ;
+    text-align: center;
+}
+
+#loginButton {
+    position: fixed;
+    top: 40px;
+    right: 10px;
+}
+
+#logoutButton {
+    position: fixed;
+    bottom: 3px;
+    right: 10px;
+}
+
+#sky_cast_heading {
+    text-align: center;
+    color: #f4b342;
+    font-size: 66pt;
+}
+
+.fieldWrapper {
+    width: 40% ;
+    margin-left: auto ;
+    margin-right: auto ;
+    text-align: left;
+}

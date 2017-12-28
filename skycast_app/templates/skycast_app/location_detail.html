@@ -1,0 +1,12 @@
+{% extends 'skycast_app/base.html' %}
+
+{% block content %}
+    <div>
+        Location Name: {{ location }}<br>
+        Location Coordinates: {{ location.latitude }}, {{ location.longitude }}<br>
+        Search Date: {{ location.search_date }}<br>
+        {% if location.user %} Searched By: {{ location.user }}{% endif %}<br>
+        <h1> Weather Info:</h1><br>
+        {{ weather }}
+    </div>
+{% endblock %}

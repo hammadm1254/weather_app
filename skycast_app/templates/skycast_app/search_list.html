@@ -1,0 +1,13 @@
+{% extends 'skycast_app/base.html' %}
+
+{% block content %}
+    <h1>User's Search History</h1><br>
+    {% for location in searches %}
+    <div class = "location">
+        <div class = "date">>
+             Searched: {{ location.search_date }}
+        </div>
+        <h1><a href="{% url 'location_detail' pk=location.pk %}">{{ location }}</a></h1>
+    </div>
+    {% endfor %}
+{% endblock %}

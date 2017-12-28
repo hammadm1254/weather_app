@@ -1,0 +1,54 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/skycast_app.css' %}">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="{% static 'scripts/script.js' %}"></script>
+    <title>Sky Cast</title>
+</head>
+<body>
+    <div class="page-header">
+        <div class="header_contents" id="header_banner">
+            <div class="header_contents" id="sky_cast_heading">
+                Sky Cast
+            </div>
+            {% if request.path != '/login/' and request.path != '/create_account/' %}
+                <div id="loginButton">
+                    <a href="/login">
+                        <button type="submit" class="save btn btn-default">
+                            {% if user.is_authenticated %}
+                                {{ user }}
+                            {%  else %}Login
+                            {% endif %}
+                        </button>
+                    </a><br>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="content_container" id="the_content_container">
+        <!--<center>-->
+            {% block content %}
+            {% endblock %}
+        <!--</center>-->
+    </div>
+
+    <div class="page-footer" id="credits">
+        <div class="footer_contents">
+            <center><a href="https://darksky.net/dev">Powered By Dark Sky</a></center>
+            {% if user.is_authenticated %}
+                <div id="logoutButton">
+                    <a href="/logout"> <!-- Will later go to logout and home-->
+                        <button type="submit" class="save btn btn-default">Logout</button>
+                    </a><br>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

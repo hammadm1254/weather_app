@@ -1,0 +1,18 @@
+{% extends 'skycast_app/base.html' %}
+
+{% block content %}
+    <h2>Sign up</h2><br>
+    Username and Password are both case sensitive
+    <form method="POST" class="post-forms" id="signup_form">{% csrf_token %}
+       {% for field in form %}
+            <div class="fieldWrapper">
+                {{ field.errors }}
+                {{ field.label_tag }} {{ field }}
+                {% if field.help_text %}
+                    <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="save btn btn-default">Create User</button>
+    </form>
+{% endblock %}

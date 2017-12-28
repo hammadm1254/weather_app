@@ -1,0 +1,14 @@
+{% extends 'skycast_app/base.html' %}
+
+{% block content %}
+    <h3> Enter your location Below</h3>
+    <form method="POST" class="post-forms">{% csrf_token %}
+        {% for field in form %}
+            {{ field }}
+        {% endfor %}
+        <button type="submit" class="save btn btn-default">Search</button><br>
+        {% if error %}
+            {{ error }}
+        {% endif %}
+    </form>
+{% endblock %}
