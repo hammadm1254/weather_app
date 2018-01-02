@@ -1,0 +1,25 @@
+{% extends 'skycast_app/base.html' %}
+
+{% block content %}
+    <div>
+        Location Name: {{ location }}<br>
+        Location Coordinates: {{ location.latitude }}, {{ location.longitude }}<br>
+        Search Date: {{ location.search_date }}<br>
+        {% if location.user %} Searched By: {{ location.user }}{% endif %}<br>
+        <h1> Weather Info:</h1>
+        <div class="weather_icon">
+            <img alt="/static/images/forecast_images/loading.gif" src= "{{ weather.icon }}"><br>
+            <h2>
+                Local Time: {{ weather.time }}<br>
+                Description: {{ weather.description }}<br>
+                Temperature: {{ weather.temperature }} &#730;F<br>
+                Feels Like: {{ weather.apparentTemperature}} &#730;F<br>
+                Wind Speed: {{ weather.windSpeed }} miles/hr<br>
+                Wind Gust: {{ weather.windGust }} miles/hr<br>
+                Wind Bearing: {{ weather.windBearing }}&#730; from North<br>
+                Precipitation: {{ weather.precipitation }}<br>
+                Precipitation Probability: {{ weather.precipitationProbability }}<br>
+            </h2>
+        </div>
+    </div>
+{% endblock %}

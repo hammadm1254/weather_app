@@ -78,3 +78,55 @@
     margin-right: auto ;
     text-align: left;
 }
+
+.weather_display_current {
+    width: 370px;
+    height: 30%;
+    margin-left: auto ;
+    margin-right: auto ;
+    text-align: left;
+    border: 1px solid black;
+}
+
+.weather_text {
+    width: 70%;
+    height: 48%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    font-size: 13pt;
+}
+
+.weather_icon {
+    width: 100%;
+    height: 52%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.weather_display_future_outer {
+    height: 220px;
+    width: 100%;
+    position: float;
+    bottom: 41px;
+    left: 0px;
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.weather_display_future_inner {
+    height: 100%;
+    width: 2500px;
+    white-space: nowrap;
+}
+
+.weather_daily {
+    width: 180px ;
+    height: 100%;
+    margin-left: 2px ;
+    margin-right: 2px ;
+    text-align: left;
+    border: 1px solid black;
+}
