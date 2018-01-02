@@ -8,9 +8,10 @@
     <h2> Weather Info:</h2>
     <div class="weather_display_current">
         <div class="weather_icon">
-            <img alt="{{ weather.currently.icon }}" src="/static/images/forecast_images/{{ weather.currently.icon }}.png" width="220px" height="220px">
+            <img alt="{{ weather.currently.icon }}" src="/static/images/forecast_images/{{ weather.currently.icon }}.png" width="210px" height="210px">
         </div>
         <div class="weather_text">
+            <a href="/historical_data/{{ location.latitude }},{{ location.longitude }}">Historical Weather Data</a>
             Description: {{ weather.currently.summary }}<br>
             Temperature: {{ weather.currently.temperature }} &#730;F<br>
             Feels Like: {{ weather.currently.apparentTemperature}} &#730;F<br>

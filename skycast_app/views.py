@@ -9,17 +9,42 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 
 ## my own functions in modules directory
-from modules import getWeather, locationInfo
+from modules import getWeather, locationInfo, fusioncharts
 
 ## The forms and models
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SearchForm, UserLoginForm
 from .models import Search
 
-
 def get_redirectURL(the_request):
     redirect_url = the_request.get_full_path().split('/?next=')
     return str(redirect_url[-1])
+
+def historical_data_view(request, lat, lng):
+    lat = float(lat)
+    lng = float(lng)
+    if lat > 90 or lat < -90 or lng > 180 or lng < -180:
+        return render(request, 'skycast_app/error_page.html', {"message": 'Latitude/Longitude not found'})
+    else:
+        coordinates = {'lat': lat, 'lng': lng}
+    try:
+        l = locationInfo.Location(str(lat) + ',' + str(lng))
+        locationName = l.address
+    except:
+        locationName = str(lat) + ',' + str(lng)
+    try:
+        hist_data = getWeather.compileHistory(coordinates, locationName)
+    except:
+        return render(request, 'skycast_app/error_page.html', {"message": 'Unable to get weather data. Try different location or try again later'})
+    try:
+        tempMax = fusioncharts.FusionCharts("column2D", "ex1", "600", "350", "tempMax", "json", hist_data['tempMax'])
+        tempMin = fusioncharts.FusionCharts("column2D", "ex2", "600", "350", "tempMin", "json", hist_data['tempMin'])
+        precip = fusioncharts.FusionCharts("column2D", "ex3", "600", "350", "precip", "json", hist_data['precip'])
+        windSpeed = fusioncharts.FusionCharts("column2D", "ex4", "600", "350", "windSpeed", "json", hist_data['windSpeed'])
+    except:
+        return render(request, 'skycast_app/error_page.html',
+                      {"message": 'Unable to generate graphs. Try different location or try again later'})
+    return render(request, 'skycast_app/historical_data.html', {'tempMax': tempMax.render(), 'tempMin': tempMin.render(), 'precip': precip.render(), 'windSpeed': windSpeed.render()})
 
 @login_required
 def search_list(request):
@@ -84,7 +109,10 @@ def home(request):
                 else:
                     #### Turn this into redirect to location detail by passing location object as pk
                     weatherData = getWeather.getForecast(currentLocation.coordinates)
-                    return render(request, 'skycast_app/location_detail.html', {'location': userInput, 'weather': weatherData,})
+                    if weatherData:
+                        return render(request, 'skycast_app/location_detail.html', {'location': userInput, 'weather': weatherData,})
+                    else:
+                        return render(request, 'skycast_app/home.html', {'form': form, 'error': 'Cannot load weather information for this location. Please try  different location or try again later'})
             else:
                 return render(request, 'skycast_app/home.html', {'form': form, 'error': 'Location Not Found!'})
     else:
@@ -98,15 +126,19 @@ def location_detail(request, pk):
     if request.user == location_clicked.user:
         coordinates = {'lat': location_clicked.latitude, 'lng': location_clicked.longitude}
         weatherData = getWeather.getForecast(coordinates)
-        #### Should update DB again with new search add two seconds to prevent update of DB repeatedly in quick succession
-        if location_clicked.search_date < timezone.now() - timezone.timedelta(seconds=2): ## and if weather data is not none. Add timer or weather and location
-            try:
-                updateDB = Search.objects.create(user=request.user,latitude=location_clicked.latitude, longitude=location_clicked.longitude, location_Search=location_clicked.location_Search, search_date=timezone.now())
-                return render(request, 'skycast_app/location_detail.html',
-                              {'location': updateDB, 'weather': weatherData})
-            except:
-                return render(request, 'skycast_app/error_page.html', {"message": 'DB Update Failed'})
+        if weatherData:
+            #### Should update DB again with new search add two seconds to prevent update of DB repeatedly in quick succession
+            if location_clicked.search_date < timezone.now() - timezone.timedelta(seconds=2): ## and if weather data is not none. Add timer or weather and location
+                try:
+                    updateDB = Search.objects.create(user=request.user,latitude=location_clicked.latitude, longitude=location_clicked.longitude, location_Search=location_clicked.location_Search, search_date=timezone.now())
+                    return render(request, 'skycast_app/location_detail.html',
+                                  {'location': updateDB, 'weather': weatherData})
+                except:
+                    return render(request, 'skycast_app/error_page.html', {"message": 'DB Update Failed'})
+            else:
+                return render(request, 'skycast_app/location_detail.html', {'location': location_clicked, 'weather': weatherData})
         else:
-            return render(request, 'skycast_app/location_detail.html', {'location': location_clicked, 'weather': weatherData})
+            return render(request, 'skycast_app/home.html', {'form': form,
+                                                             'error': 'Cannot load weather information for this location. Please try  different location or try again later'})
     else:
         return render(request, 'skycast_app/error_page.html', {"message": 'HTTP 404'})
